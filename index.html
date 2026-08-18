@@ -37,20 +37,22 @@
       <div id="pageActions" style="display:flex;gap:.4rem;flex-wrap:wrap"></div>
     </div>
 
-    <section class="section">
-      <div class="card calendar" id="calendar" aria-label="Kalender"></div>
-    </section>
+    <div class="planner">
+      <section class="section planner-calendar">
+        <div class="card calendar" id="calendar" aria-label="Kalender"></div>
+      </section>
 
-    <section class="section">
-      <div class="section-head">
-        <h2>Nächste Termine</h2>
-        <div id="listActions"></div>
-      </div>
-      <div class="appointment-list" id="appointments">
-        <div class="skeleton"></div>
-        <div class="skeleton"></div>
-      </div>
-    </section>
+      <section class="section planner-list">
+        <div class="section-head">
+          <h2>Nächste Termine</h2>
+          <div id="listActions"></div>
+        </div>
+        <div class="appointment-list" id="appointments">
+          <div class="skeleton"></div>
+          <div class="skeleton"></div>
+        </div>
+      </section>
+    </div>
   </main>
 
   <footer class="site-footer">

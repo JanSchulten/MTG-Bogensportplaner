@@ -8,13 +8,13 @@
  * bzw. PIN serverseitig prüfen.
  */
 
-import { SUPABASE_URL, SUPABASE_ANON_KEY, STORAGE_BUCKET } from './config.js';
+import { SUPABASE_URL, SUPABASE_KEY, STORAGE_BUCKET } from './config.js';
 
 const base = SUPABASE_URL.replace(/\/+$/, '');
 
 const headers = () => ({
-  apikey: SUPABASE_ANON_KEY,
-  Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+  apikey: SUPABASE_KEY,
+  Authorization: `Bearer ${SUPABASE_KEY}`,
   'Content-Type': 'application/json',
 });
 
@@ -133,8 +133,8 @@ export const supabaseApi = {
     const res = await fetch(`${base}/storage/v1/object/${STORAGE_BUCKET}/${path}`, {
       method: 'POST',
       headers: {
-        apikey: SUPABASE_ANON_KEY,
-        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
         'Content-Type': 'image/jpeg',
         'x-upsert': 'false',
       },

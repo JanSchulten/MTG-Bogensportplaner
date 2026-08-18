@@ -4,12 +4,12 @@
  * der restliche Code kennt den Unterschied nicht.
  */
 
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from './config.js';
+import { SUPABASE_URL, SUPABASE_KEY } from './config.js';
 import { localApi } from './api-local.js';
 import { supabaseApi } from './api-supabase.js';
 
 export const isConfigured = Boolean(
-  SUPABASE_URL && SUPABASE_ANON_KEY && SUPABASE_URL.startsWith('http')
+  SUPABASE_URL && SUPABASE_KEY && SUPABASE_URL.startsWith('http')
 );
 
 export const api = isConfigured ? supabaseApi : localApi;

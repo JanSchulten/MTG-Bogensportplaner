@@ -91,6 +91,7 @@ function tile(item) {
       item.description ? h('p', { class: 'tile-text', text: item.description }) : null,
       h('p', { class: 'small', style: 'margin:.5rem 0 0' },
         h('a', {
+          class: 'link-out',
           href: `https://www.youtube.com/watch?v=${item.youtube_id}`,
           target: '_blank', rel: 'noopener noreferrer',
           text: 'Auf YouTube öffnen ↗',

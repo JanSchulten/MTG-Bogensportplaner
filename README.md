@@ -12,7 +12,8 @@ in einem kostenlosen [Supabase](https://supabase.com)-Projekt.
 
 ## Was die Seite kann
 
-**Termine** (`index.html`)
+**Termine** (`index.html`)  — am Desktop stehen Kalender und Terminliste
+nebeneinander, auf dem Handy untereinander.
 
 * Monatskalender; jeder Sonntag (16:00–19:00) und Dienstag (17:30–19:00) ist
   automatisch angelegt und farbig markiert.
@@ -99,16 +100,16 @@ scheitern, lassen sie sich im Dashboard nachtragen unter
 ### 4. Zugangsdaten eintragen
 
 In Supabase unter **Project Settings → API** stehen *Project URL* und der
-*anon public* Schlüssel. Beide in [`assets/js/config.js`](assets/js/config.js)
-eintragen:
+*Publishable key* (beginnt mit `sb_publishable_`). Beide in
+[`assets/js/config.js`](assets/js/config.js) eintragen:
 
 ```js
 export const SUPABASE_URL = 'https://deinprojekt.supabase.co';
-export const SUPABASE_ANON_KEY = 'eyJhbGciOi...';
+export const SUPABASE_KEY = 'sb_publishable_...';
 ```
 
-Sobald dort etwas steht, schaltet die Seite automatisch von Demo auf Supabase um
-und das Hinweisbanner verschwindet.
+Sobald eine Projekt-URL eingetragen ist, schaltet die Seite automatisch von Demo
+auf Supabase um und das Hinweisbanner verschwindet.
 
 ### 5. Veröffentlichen
 
@@ -162,6 +163,23 @@ Open-Meteo liefert bis zu 16 Tage im Voraus; weiter entfernte Termine zeigen
 statt einer Vorhersage einen entsprechenden Hinweis.
 
 ---
+
+## Bedienung auf Handy und Desktop
+
+Die Seite ist mobil zuerst gebaut und an neun Fenstergrößen von 320 px bis
+1920 px geprüft — kein waagerechtes Scrollen, kein abgeschnittener Text.
+
+* Auf Touch-Geräten sind alle Bedienelemente mindestens 44 px hoch; die
+  „Bin da“-Knöpfe als meistgenutzte Fläche sogar 46 px. Ausschlaggebend ist
+  dabei die Eingabeart (`pointer: coarse`), nicht die Fensterbreite — ein
+  Tablet mit 1024 px wird schließlich auch angetippt.
+* Formularfelder sind auf Touch-Geräten mindestens 16 px groß, sonst zoomt
+  Safari beim Antippen ungefragt ins Formular hinein.
+* Ab 64 rem Breite stehen Kalender und Terminliste nebeneinander, der Kalender
+  bleibt beim Blättern stehen.
+* Die Kopfzeile ist nur dort angeheftet, wo sie flach ist — auf dem Handy
+  würde sie mit umgebrochener Navigation sonst dauerhaft Platz kosten.
+* Hell und dunkel folgen der Systemeinstellung.
 
 ## Tests
 
