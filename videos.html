@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Videos · MTG Bogensportplaner</title>
+  <meta name="description" content="Nützliche YouTube-Videos zu Technik, Material und Training im Bogensport.">
+  <meta name="theme-color" content="#2f6f4e" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14181a" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%B9%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true">&#127993;</span>
+        <span>Bogensportplaner<small>MTG</small></span>
+      </a>
+      <nav class="nav" aria-label="Hauptnavigation">
+          <a href="index.html">Termine</a>
+          <a href="news.html">News</a>
+          <a href="lost-found.html">Lost &amp; Found</a>
+          <a href="videos.html" aria-current="page">Videos</a>
+      </nav>
+      <button id="authBtn" class="btn btn-ghost btn-small" type="button">Anmelden</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div id="demoBanner"></div>
+    <div class="page-head">
+      <div>
+        <h1>Nützliche Videos</h1>
+        <p class="muted">Technik, Material und Training — gesammelt aus YouTube</p>
+      </div>
+      <div id="pageActions" style="display:flex;gap:.4rem;flex-wrap:wrap"></div>
+    </div>
+
+    <section class="section">
+      <div class="tile-grid" id="videoList">
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      MTG Bogensportplaner · Training sonntags 16:00–19:00 Uhr und dienstags 17:30–19:00 Uhr
+    </div>
+  </footer>
+
+  <script type="module" src="assets/js/page-videos.js"></script>
+</body>
+</html>

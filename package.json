@@ -1,0 +1,11 @@
+{
+  "name": "mtg-bogensportplaner",
+  "version": "1.0.0",
+  "description": "Terminplaner für das Bogensport-Training (MTG) — statische Seite mit Supabase-Backend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "serve": "python3 -m http.server 8000"
+  }
+}
