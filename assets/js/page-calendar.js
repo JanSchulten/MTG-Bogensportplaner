@@ -1,6 +1,6 @@
 /** Startseite: Kalender, Terminliste, Trainer-Zusagen, Verwaltung. */
 
-import { api } from './api.js';
+import { api, isConfigured } from './api.js';
 import { MONTHS_AHEAD } from './config.js';
 import {
   TRAINERS, STATUS_DA, STATUS_NICHT_DA,
@@ -10,7 +10,7 @@ import { renderCalendar } from './calendar.js';
 import { placeField } from './place-field.js';
 import { forecastForAppointments } from './weather.js';
 import { ADMIN, isAuthed, onAuthChange, requireAdmin, withSecret } from './auth.js';
-import { mountShell, renderLoadError } from './shell.js';
+import { mountShell, renderLoadError, renderSetupHint } from './shell.js';
 import {
   $, h, clear, field, openDialog, confirmDialog, toast,
   fmtDate, fmtTimeRange, fmtRelativeDay, emptyState,
@@ -27,6 +27,7 @@ const state = {
   settings: {},
   weather: new Map(),
   showAll: false,
+  trainersMissing: false,
   range: { from: null, to: null },
   openCard: null, // { id, host } — Termindetails im Dialog, damit sie mitziehen
 };
@@ -40,11 +41,14 @@ async function loadAll() {
   const to = toISODate(toDate);
   state.range = { from, to };
 
+  // Schlägt das Anlegen fehl, ist das kein Grund gar nichts zu zeigen. Gemeldet
+  // wird es aber erst, wenn der Rest lädt — sonst stünde neben der
+  // verständlichen Fehlerseite noch die rohe Meldung als Toast.
+  let ensureError = null;
   try {
     await api.ensureAppointments(from, to);
   } catch (err) {
-    // Fehlende Standardtermine sind ärgerlich, aber kein Grund, gar nichts zu zeigen.
-    toast(`Termine konnten nicht ergänzt werden: ${err.message}`, 'error');
+    ensureError = err;
   }
 
   const [trainers, appointments, attendance, settings] = await Promise.all([
@@ -54,6 +58,9 @@ async function loadAll() {
     api.getSettings(),
   ]);
 
+  // Leere Trainerliste heißt: schema.sql lief, seed.sql noch nicht.
+  // TRAINERS bleibt als Rückfallebene, damit die Ampel weiter rechnet.
+  state.trainersMissing = isConfigured && !api.isDemo && !trainers?.length;
   state.trainers = trainers?.length ? trainers : TRAINERS;
   state.appointments = sortAppointments(appointments);
   state.settings = settings || {};
@@ -61,6 +68,10 @@ async function loadAll() {
   for (const row of attendance) {
     if (!state.attendance.has(row.appointment_id)) state.attendance.set(row.appointment_id, []);
     state.attendance.get(row.appointment_id).push(row);
+  }
+
+  if (ensureError) {
+    toast(`Standardtermine konnten nicht ergänzt werden: ${ensureError.message}`, 'error');
   }
 }
 
@@ -496,12 +507,26 @@ async function reload(message) {
 async function init() {
   mountShell();
   onAuthChange(render);
+  // Ohne Daten hätte der Kalender nichts anzuzeigen; ein leerer Kasten neben
+  // der Meldung sieht nach einem zweiten Fehler aus.
+  const kalenderAusblenden = () => {
+    const bereich = $('.planner-calendar');
+    if (bereich) bereich.hidden = true;
+  };
+
   try {
     await loadAll();
   } catch (err) {
+    kalenderAusblenden();
     renderLoadError($('#appointments'), err);
     return;
   }
+  if (state.trainersMissing) {
+    kalenderAusblenden();
+    renderSetupHint($('#appointments'));
+    return;
+  }
+
   render();
   loadWeather();
 }

@@ -217,6 +217,9 @@ main { padding-block: 1.5rem 4rem; }
     display: grid; align-items: start; gap: 1.75rem;
     grid-template-columns: minmax(19rem, 23rem) 1fr;
   }
+  /* Ist der Kalender ausgeblendet (Ladefehler), soll die Meldung die volle
+     Breite bekommen statt in der rechten Spalte zu kleben. */
+  .planner:has(> [hidden]) { grid-template-columns: 1fr; }
   .planner > .section { margin-bottom: 0; }
   .planner-calendar { position: sticky; top: 4.75rem; }
   .planner-calendar .calendar { max-height: calc(100vh - 6.5rem); overflow: auto; }

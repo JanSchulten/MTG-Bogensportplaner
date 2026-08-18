@@ -47,20 +47,30 @@ werden im Browser verkleinert, bevor sie hochgeladen werden.
 
 ---
 
-## Demo-Modus: sofort ausprobieren
+## Demo-Modus: gefahrlos ausprobieren
 
-Ohne jede Einrichtung läuft die Seite im Demo-Modus — alle Daten bleiben dann im
-Browser des jeweiligen Geräts und werden **nicht** geteilt.
+Hänge **`?demo=1`** an die Adresse, und die Seite arbeitet nur im eigenen
+Browser — Änderungen berühren die echten Vereinsdaten nicht:
+
+```
+index.html?demo=1
+```
+
+Die Wahl gilt für die ganze Sitzung, also auch beim Wechsel auf News, Lost &
+Found oder Videos. `?demo=0` schaltet zurück in den Normalbetrieb. Ein
+Hinweisbanner zeigt jederzeit an, in welchem Modus die Seite läuft.
+
+Zum lokalen Ausprobieren:
 
 ```bash
-npm run serve        # startet http://localhost:8000
+npm run serve        # http://localhost:8000/index.html?demo=1
 ```
 
 Zugangsdaten im Demo-Modus: Passwort `RobinHood`, PINs `1111` (Chris),
-`2222` (Jan), `3333` (JanS). Ein Hinweisbanner zeigt sie auch auf der Seite an.
+`2222` (Jan), `3333` (JanS).
 
-> Der Demo-Modus ist zum Anschauen gedacht. Damit alle Trainer denselben Stand
-> sehen, ist Supabase nötig.
+Ist in `config.js` gar keine Projekt-URL hinterlegt, läuft die Seite ohnehin
+immer im Demo-Modus.
 
 ---
 
@@ -97,19 +107,36 @@ scheitern, lassen sie sich im Dashboard nachtragen unter
 * `INSERT` für `anon` erlauben (Bilder hochladen),
 * `UPDATE` und `DELETE` **nicht** erlauben.
 
-### 4. Zugangsdaten eintragen
+### 4. Zugangsdaten eintragen — bereits erledigt
 
-In Supabase unter **Project Settings → API** stehen *Project URL* und der
-*Publishable key* (beginnt mit `sb_publishable_`). Beide in
-[`assets/js/config.js`](assets/js/config.js) eintragen:
+Projekt-URL und Publishable key stehen schon in
+[`assets/js/config.js`](assets/js/config.js). Für ein anderes Projekt stehen
+beide Werte in Supabase unter **Project Settings → API**:
 
 ```js
 export const SUPABASE_URL = 'https://deinprojekt.supabase.co';
 export const SUPABASE_KEY = 'sb_publishable_...';
 ```
 
-Sobald eine Projekt-URL eingetragen ist, schaltet die Seite automatisch von Demo
-auf Supabase um und das Hinweisbanner verschwindet.
+### 4b. Prüfen, ob die Datenbank steht
+
+Der schnellste Weg: die Seite aufrufen. Sie sagt selbst, was fehlt — „Die
+Datenbank ist noch nicht eingerichtet" oder „Es sind noch keine Trainer
+angelegt" führen jeweils zum passenden Schritt oben.
+
+Wer lieber im Terminal nachsieht:
+
+```bash
+curl "https://ipikdpqeismkbzbpnjlp.supabase.co/rest/v1/trainers?select=*" \
+  -H "apikey: sb_publishable_LYpssl-5syTEc9cHGTxcnQ_-CdCeIct"
+```
+
+| Antwort | Bedeutung |
+|---|---|
+| Chris, Jan und JanS | alles bereit |
+| `[]` | `schema.sql` lief, `seed.sql` fehlt noch |
+| Meldung zu `relation ... does not exist` | `schema.sql` fehlt noch |
+| `Invalid API key` | Publishable key in `config.js` prüfen |
 
 ### 5. Veröffentlichen
 
@@ -187,9 +214,15 @@ Die Seite ist mobil zuerst gebaut und an neun Fenstergrößen von 320 px bis
 npm test
 ```
 
-Prüft die Ampel-Logik (alle 27 Kombinationen der drei Trainer inklusive der
-Schlüsselregel), die Erzeugung der Terminserie und die Auswertung des
-Wetterfensters.
+25 Tests, ohne Netzzugriff:
+
+* **Ampel-Logik** — alle 27 Kombinationen der drei Trainer inklusive der
+  Schlüsselregel, dazu Terminserie (auch über den Sommerzeitwechsel) und die
+  Auswertung des Wetterfensters.
+* **Schema-Vertrag** — vergleicht `assets/js/api-supabase.js` mit
+  `supabase/schema.sql`: Funktionsnamen, Argumentnamen, gelesene Tabellen und
+  Spalten, erteilte Rechte und der Storage-Bucket. Ein Tippfehler in einem
+  Spaltennamen fällt so beim Testen auf statt erst im Betrieb.
 
 Das Datenbankschema lässt sich mit [`supabase/verify.sql`](supabase/verify.sql)
 gegenprüfen: nach `schema.sql` und `seed.sql` im SQL Editor ausführen. Die dort

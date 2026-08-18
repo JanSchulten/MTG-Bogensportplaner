@@ -1,10 +1,12 @@
 /**
  * Zugangsdaten für das Supabase-Projekt.
  *
- * Solange SUPABASE_URL leer ist, läuft die Seite im Demo-Modus: alle Daten
- * liegen dann nur lokal im Browser (localStorage) und werden NICHT geteilt.
- * Sobald hier eine Projekt-URL steht, schaltet die Seite automatisch auf
- * Supabase um.
+ * Steht hier eine Projekt-URL, arbeitet die Seite gegen Supabase und alle
+ * sehen denselben Stand. Ist SUPABASE_URL leer, läuft sie im Demo-Modus mit
+ * localStorage — die Daten bleiben dann auf dem jeweiligen Gerät.
+ *
+ * Zum gefahrlosen Ausprobieren lässt sich der Demo-Modus jederzeit mit
+ * ?demo=1 in der Adresszeile erzwingen, ohne diese Datei zu ändern.
  *
  * Beide Werte stehen in Supabase unter  Project Settings → API:
  *   Project URL      -> SUPABASE_URL      (z. B. https://abcdefgh.supabase.co)
@@ -17,8 +19,7 @@
  * (siehe supabase/schema.sql).
  */
 
-// TODO: Projekt-URL eintragen, dann ist die Einrichtung abgeschlossen.
-export const SUPABASE_URL = '';
+export const SUPABASE_URL = 'https://ipikdpqeismkbzbpnjlp.supabase.co';
 
 export const SUPABASE_KEY = 'sb_publishable_LYpssl-5syTEc9cHGTxcnQ_-CdCeIct';
 
