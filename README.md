@@ -140,13 +140,19 @@ curl "https://ipikdpqeismkbzbpnjlp.supabase.co/rest/v1/trainers?select=*" \
 
 ### 5. Veröffentlichen
 
-Der Workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) führt
-bei jedem Push auf `main` die Tests aus und veröffentlicht die Seite. Pages
-schaltet er beim ersten Lauf selbst ein (`enablement: true`), in den
-Repository-Einstellungen ist nichts von Hand umzustellen.
+**Einmalig von Hand:** Repository → **Settings → Pages** → *Source* auf
+**GitHub Actions** stellen.
 
-Die Adresse steht danach unter **Settings → Pages** und lautet in der Regel
+Danach führt der Workflow
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml) bei jedem Push auf
+`main` die Tests aus und veröffentlicht die Seite unter
 `https://<benutzername>.github.io/MTG-Bogensportplaner/`.
+
+Solange die Einstellung fehlt, laufen die Tests zwar durch, der `deploy`-Job
+bricht aber ab mit *„Get Pages site failed … verify that the repository has
+Pages enabled"*. Automatisieren lässt sich dieser Schritt nicht: das Anlegen
+der Pages-Site verlangt Admin-Rechte, die der `GITHUB_TOKEN` eines Workflows
+nicht besitzt.
 
 ---
 
