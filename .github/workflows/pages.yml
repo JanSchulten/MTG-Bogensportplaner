@@ -1,5 +1,6 @@
 # Veröffentlicht die Seite auf GitHub Pages.
-# Einmalig nötig: Repository → Settings → Pages → Source auf "GitHub Actions" stellen.
+# Pages wird beim ersten Lauf selbst aktiviert (enablement unten) — in den
+# Repository-Einstellungen ist dafür nichts von Hand umzustellen.
 name: GitHub Pages
 
 on:
@@ -35,6 +36,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+        with:
+          # Aktiviert Pages beim ersten Lauf selbst und stellt die Quelle auf
+          # GitHub Actions. Ohne das bricht der Schritt mit "Get Pages site
+          # failed" ab, solange Pages nicht von Hand eingeschaltet wurde.
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .

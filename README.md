@@ -140,9 +140,13 @@ curl "https://ipikdpqeismkbzbpnjlp.supabase.co/rest/v1/trainers?select=*" \
 
 ### 5. Veröffentlichen
 
-Unter **Settings → Pages** als Quelle *GitHub Actions* wählen. Der Workflow
-[`.github/workflows/pages.yml`](.github/workflows/pages.yml) führt bei jedem
-Push auf `main` die Tests aus und veröffentlicht die Seite.
+Der Workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) führt
+bei jedem Push auf `main` die Tests aus und veröffentlicht die Seite. Pages
+schaltet er beim ersten Lauf selbst ein (`enablement: true`), in den
+Repository-Einstellungen ist nichts von Hand umzustellen.
+
+Die Adresse steht danach unter **Settings → Pages** und lautet in der Regel
+`https://<benutzername>.github.io/MTG-Bogensportplaner/`.
 
 ---
 
